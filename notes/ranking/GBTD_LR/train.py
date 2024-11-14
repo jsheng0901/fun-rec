@@ -1,4 +1,4 @@
-from notes.data.dataloader import kaggle_loader
+from notes.utils.dataloader import kaggle_loader
 from model import *
 import time
 
