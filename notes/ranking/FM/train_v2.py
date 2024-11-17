@@ -1,7 +1,6 @@
 import logging
 import time
 
-from model_v1 import *
 from notes.ranking.FM.model_v2 import FactorizationMachine
 from notes.utils.dataloader import create_dataset
 from config import FMModelConfig
