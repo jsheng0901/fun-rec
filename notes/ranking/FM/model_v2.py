@@ -48,7 +48,7 @@ class FactorizationMachine(torch.nn.Module):
     def forward(self, x):
         """
         :param x: [batch_size, num_fields]
-        :return: [batch_size, ]
+        :return: [batch_size, 1]
         """
         # x -> [batch_size, num_fields]
         # linear -> [batch_size, 1]
