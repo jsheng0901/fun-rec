@@ -1,5 +1,7 @@
 import logging
 import time
+import torch
+import torch.nn as nn
 
 from notes.ranking.FM.model_v2 import FactorizationMachine
 from notes.utils.dataloader import create_dataset
