@@ -38,6 +38,7 @@ class FactorizationMachine(torch.nn.Module):
     """
     A pytorch implementation of Factorization Machine.
     This version linear and cross layer use embedding layer before pass into model.
+    Input id is one-hot encoding id, so get input embedding output equal to feature * weight.
     """
 
     def __init__(self, field_dims, embed_dim):
