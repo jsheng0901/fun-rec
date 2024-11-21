@@ -1,11 +1,46 @@
 import logging
 import time
+from copy import deepcopy
 
 import torch
 from sklearn import metrics
 from tqdm import tqdm
 
 from notes.utils.dataloader import BatchLoader
+
+
+class EarlyStopper:
+    """
+    Early stopper object.
+    If metric is improved or metric not continues to improve smaller than number of trials, then keep training.
+    Otherwise, stop training.
+    """
+    def __init__(self, model, num_trials=50):
+        self.num_trials = num_trials
+        self.trial_counter = 0
+        self.best_metric = -1e9
+        self.best_state = deepcopy(model.state_dict())
+        self.model = model
+
+    def is_continuable(self, metric):
+        # maximize metric
+        # if metric is keep increase
+        if metric > self.best_metric:
+            # update best metric
+            self.best_metric = metric
+            # init trail counter
+            self.trial_counter = 0
+            # record model state
+            self.best_state = deepcopy(self.model.state_dict())
+            return True
+        # if metric not improve times smaller than trials
+        elif self.trial_counter + 1 < self.num_trials:
+            # update number of trial counter
+            self.trial_counter += 1
+            return True
+        # otherwise stop training
+        else:
+            return False
 
 
 class Trainer:
@@ -18,7 +53,9 @@ class Trainer:
         self.batch_size = batch_size
         self.task = task
 
-    def train(self, train_x, train_y, epoch=100, eval_interval=10, valid_x=None, valid_y=None):
+        self.early_stopper = None
+
+    def train(self, train_x, train_y, epoch=100, trials=None, valid_x=None, valid_y=None):
         # if batch loader
         if self.batch_size:
             train_loader = BatchLoader(train_x, train_y, self.batch_size)
@@ -26,8 +63,8 @@ class Trainer:
             # 为了在 for b_x, b_y in train_loader 的时候统一
             train_loader = [[train_x, train_y]]
 
-        # if trials:
-        #     early_stopper = EarlyStopper(self.model, trials)
+        if trials:
+            self.early_stopper = EarlyStopper(self.model, trials)
 
         train_loss_list = []
         valid_loss_list = []
@@ -50,9 +87,8 @@ class Trainer:
             # record each epoch avg loss
             train_loss_list.append(batch_train_loss / len(train_x))
 
-            # valid mode
-            if step % eval_interval == 0 or step == epoch - 1:
-                # if trials:
+            # valid mode, check early stopper or not
+            if trials:
                 # valid loss and metric
                 valid_loss, valid_metric = self.test(valid_x, valid_y)
                 # valid_loss_list.append(valid_loss)
@@ -61,10 +97,10 @@ class Trainer:
                 t2 = time.time()
                 dt = t2 - t1
                 logging.info(f"step {step}, dt: {dt * 1000:.2f}ms, train loss: {train_loss:.4f},"
-                             f"train metric: {train_metric:.2f}, val loss： {valid_loss:.4f},"
-                             f"val auc: {valid_metric:.2f}")
-                # if not early_stopper.is_continuable(valid_metric):
-                #     break
+                             f"train metric: {train_metric:.3f}, val loss： {valid_loss:.4f},"
+                             f"val auc: {valid_metric:.3f}")
+                if self.early_stopper.is_continuable(valid_metric) is False:
+                    break
 
         # if trials:
         #     self.model.load_state_dict(early_stopper.best_state)
