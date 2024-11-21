@@ -3,7 +3,7 @@ from notes.ranking.layer.layer import FeaturesEmbedding, FeaturesLinear
 import torch
 
 
-class FieldAwareCross(torch.nn.Module):
+class FieldAwareCross(nn.Module):
     """
     Field feature cross layer, output = sum_i(sum_j(<v_i_fj, v_j_fi> xi, xj))
     Calculate each feature cross interaction weight.
@@ -49,7 +49,7 @@ class FieldAwareCross(torch.nn.Module):
         return output
 
 
-class FieldAwareFactorizationMachineModel(torch.nn.Module):
+class FieldAwareFactorizationMachineModel(nn.Module):
     """
     A pytorch implementation of Field Aware Factorization Machine.
     This version linear and cross layer use embedding layer before pass into model.
