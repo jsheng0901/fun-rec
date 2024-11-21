@@ -8,7 +8,7 @@ model_config = {
     "learning_rate": 1e-4,
     "regularization": 1e-6,
     "num_epochs": 300,
-    "eval_interval": 100,
+    "trials": 10,
     "device": "cpu",
     "k_dims": 10
 }

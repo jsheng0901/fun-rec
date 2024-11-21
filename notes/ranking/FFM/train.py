@@ -18,7 +18,7 @@ def train(config):
     learning_rate = config['learning_rate']
     regularization = config['regularization']
     num_epochs = config['num_epochs']
-    eval_interval = config['eval_interval']
+    trials = config['trials']
     sample_size = config['sample_size']
     batch_size = config['batch_size']
 
@@ -38,7 +38,7 @@ def train(config):
 
     # start train the model
     trainer = Trainer(model, optimizer, criterion, batch_size)
-    trainer.train(train_x, train_y, epoch=num_epochs, eval_interval=eval_interval, valid_x=valid_x, valid_y=valid_y)
+    trainer.train(train_x, train_y, epoch=num_epochs, trials=trials, valid_x=valid_x, valid_y=valid_y)
     test_loss, test_auc = trainer.test(test_x, test_y)
     logging.info(f"test_loss:  {test_loss:.5f} | test_auc: {test_auc:.5f}")
 
