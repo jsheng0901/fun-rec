@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 def train(config):
-    # load all paramters
+    # load all parameters
     device = config['device']
     k_dims = config['k_dims']
     learning_rate = config['learning_rate']
