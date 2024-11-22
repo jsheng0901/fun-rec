@@ -35,7 +35,7 @@ class FeaturesEmbedding(nn.Module):
         return self.embedding(x)
 
 
-class FeaturesLinear(torch.nn.Module):
+class FeaturesLinear(nn.Module):
     """
     Feature linear layer, same as fully connected linear layer. output = w_i * x + w_0
     """
@@ -63,3 +63,39 @@ class FeaturesLinear(torch.nn.Module):
         # -> [batch_size, num_fields, 1] -> sum -> [batch_size, 1] + bias -> [batch_size, 1] + [1, ] -> [batch_size, 1]
         # here sum across all features in each batch, same as linear layer, for each feature times weight then sum
         return torch.sum(self.linear(x), dim=1) + self.bias
+
+
+class MultiLayerPerceptron(nn.Module):
+    """
+    Feed forward neural network layer, same name as mlp layer. l1 = w_1 * x + w_1_0, l2 = w_2 * l1 + w_2_0,
+    """
+    def __init__(self, input_dim, embed_dims, dropout, output_layer=True):
+        super().__init__()
+        # stack the layer
+        layers = list()
+        # loop through all layer output embedding dims
+        for embed_dim in embed_dims:
+            # add linear layer -> [input_dime, embed_dim]
+            layers.append(torch.nn.Linear(input_dim, embed_dim))
+            # add batch norm layer on embed dim
+            layers.append(torch.nn.BatchNorm1d(embed_dim))
+            # add relu activation function
+            layers.append(torch.nn.ReLU())
+            # add drop out layer
+            layers.append(torch.nn.Dropout(p=dropout))
+            # last layer output dime is next layer input dime
+            input_dim = embed_dim
+        # if we have output final layer, then add one linear layer for output
+        if output_layer:
+            # add output linear layer -> [input_dime, 1]
+            layers.append(torch.nn.Linear(input_dim, 1))
+        self.mlp = torch.nn.Sequential(*layers)
+
+    def forward(self, x):
+        """
+        :param x: [batch_size, embed_dim]
+        :return: if have output layer [batch_size, 1], else [batch_size, embed_dim]
+        """
+        # x -> [batch_size, embed_dim]
+        # [batch_size, embed_dim] * [embed_dim, embed_dim_1] * [embed_dim, embed_dim_2] ... -> [batch_size, embed_dim]
+        return self.mlp(x)
