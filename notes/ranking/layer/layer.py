@@ -99,3 +99,30 @@ class MultiLayerPerceptron(nn.Module):
         # x -> [batch_size, embed_dim]
         # [batch_size, embed_dim] * [embed_dim, embed_dim_1] * [embed_dim, embed_dim_2] ... -> [batch_size, embed_dim]
         return self.mlp(x)
+
+
+class EmbeddingsInteraction(nn.Module):
+    """
+    Embedding interaction layer.
+    """
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x):
+        """
+        :param x: [batch_size, num_fields, embedding_dim]
+        :return: [batch_size, num_fields*(num_fields)//2, embedding_dim]
+        """
+        num_fields = x.shape[1]
+        row, col = [], []
+        # loop through all feature combination, each feature need calculate inner product with all other feature embed
+        for i in range(num_fields):
+            for j in range(i + 1, num_fields):
+                row.append(i)
+                col.append(j)
+        # x1: [batch_size, 1, embedding_dim] * x2: [batch_size, 1, embedding_dim] -> [batch_size, 1, embedding_dim]
+        # we have num_fields * (num_fields)//2 combination, mul will keep same output shape as input
+        # then we have [batch_size, num_fields * (num_fields)//2, embedding_dim] output
+        interaction = torch.mul(x[:, row], x[:, col])
+
+        return interaction
