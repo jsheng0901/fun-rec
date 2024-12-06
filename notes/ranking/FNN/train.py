@@ -59,6 +59,7 @@ def train(config):
         fm_state_dict['linear_layer.bias'].item())
     fnn_model.load_state_dict(fnn_state_dict)
 
+    # start train the fnn model
     trainer = Trainer(fnn_model, optimizer, criterion, batch_size)
     trainer.train(train_x, train_y, epoch=num_epochs, trials=trials, valid_x=valid_x, valid_y=valid_y)
     test_loss, test_auc = trainer.test(test_x, test_y)

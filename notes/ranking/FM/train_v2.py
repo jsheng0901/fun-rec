@@ -36,7 +36,7 @@ def train(config):
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=regularization)
     criterion = nn.BCELoss()
 
-    # start train the model
+    # start train the fm model
     trainer = Trainer(model, optimizer, criterion, batch_size)
     trainer.train(train_x, train_y, epoch=num_epochs, trials=trials, valid_x=valid_x, valid_y=valid_y)
     test_loss, test_auc = trainer.test(test_x, test_y)

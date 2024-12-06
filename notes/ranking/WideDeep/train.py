@@ -38,7 +38,7 @@ def train(config):
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=regularization)
     criterion = nn.BCELoss()
 
-    # start train ipnn the model
+    # start train wide deep the model
     trainer = Trainer(model, optimizer, criterion, batch_size)
     trainer.train(train_x, train_y, epoch=num_epochs, trials=trials, valid_x=valid_x, valid_y=valid_y)
     test_loss, test_auc = trainer.test(test_x, test_y)
@@ -49,5 +49,5 @@ def train(config):
 
 if __name__ == '__main__':
     logging.info('Start Wide And Deep Model Train')
-    fm_config = WideAndDeepModelConfig.all_config
-    train(fm_config)
+    wide_and_deep_config = WideAndDeepModelConfig.all_config
+    train(wide_and_deep_config)

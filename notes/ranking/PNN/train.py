@@ -61,5 +61,5 @@ def train(config):
 
 if __name__ == '__main__':
     logging.info('Start Product Neural Network Model Train')
-    fm_config = PNNModelConfig.all_config
-    train(fm_config)
+    pnn_config = PNNModelConfig.all_config
+    train(pnn_config)
