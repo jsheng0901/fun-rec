@@ -65,6 +65,37 @@ class FeaturesLinear(nn.Module):
         return torch.sum(self.linear(x), dim=1) + self.bias
 
 
+class FeaturesCross(nn.Module):
+    """
+    Feature cross layer, output = 0.5 * sum_f((sum_i(vi_f * x_i))^2 - sum_i(vi_f^2 * x_i^2))
+    Calculate each feature cross interaction weight.
+    """
+    def __init__(self, field_dims, embed_dim, reduce_sum=True):
+        super().__init__()
+        self.embedding_layer = FeaturesEmbedding(field_dims, embed_dim)
+        self.reduce_sum = reduce_sum
+
+    def forward(self, x):
+        """
+        :param x: [batch_size, num_fields]
+        :return: [batch_size, 1] or [batch_size, embed_dim]
+        """
+        # x -> [batch_size, num_fields]
+        # embedding -> [batch_size, num_fields, embedding_dim] -> [4096, 39, 10]
+        x = self.embedding_layer(x)
+        # formula (vi_f * x_i)^2 -> x * cross -> ([n_samples, n_features] * [n_features, k])^2 -> [n_samples, k]^2
+        # x -> [batch_size, num_fields, embedding_dim] -> sum -> [batch_size, k]^2 -> [4096, 10]
+        square_of_sum = torch.pow(torch.sum(x, dim=1), 2)
+        # (vi_f^2 * x_i^2) -> x^2 * cross^2 -> ([n_samples, n_features])^2 * ([n_features, k])^2 -> [n_samples, k]
+        # x -> [batch_size, num_fields, embedding_dim]^2 -> sum -> [batch_size, k] -> [4096, 10]
+        sum_of_square = torch.sum(torch.pow(x, 2), dim=1)
+        output = square_of_sum - sum_of_square
+        if self.reduce_sum:
+            # each sample sum along k dims, sum([batch_size, k] - [batch_size, k]) -> [batch_size, 1] -> [4096, 1]
+            output = torch.sum(output, dim=1, keepdim=True)
+        return 0.5 * output
+
+
 class MultiLayerPerceptron(nn.Module):
     """
     Feed forward neural network layer, same name as mlp layer. l1 = w_1 * x + w_1_0, l2 = w_2 * l1 + w_2_0,
