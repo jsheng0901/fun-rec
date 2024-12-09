@@ -72,17 +72,14 @@ class FeaturesCross(nn.Module):
     """
     def __init__(self, field_dims, embed_dim, reduce_sum=True):
         super().__init__()
-        self.embedding_layer = FeaturesEmbedding(field_dims, embed_dim)
         self.reduce_sum = reduce_sum
 
     def forward(self, x):
         """
-        :param x: [batch_size, num_fields]
+        :param x: [batch_size, num_fields, embed_dim]
         :return: [batch_size, 1] or [batch_size, embed_dim]
         """
-        # x -> [batch_size, num_fields]
-        # embedding -> [batch_size, num_fields, embedding_dim] -> [4096, 39, 10]
-        x = self.embedding_layer(x)
+        # input x already apply embedding layer then pass into cross layer
         # formula (vi_f * x_i)^2 -> x * cross -> ([n_samples, n_features] * [n_features, k])^2 -> [n_samples, k]^2
         # x -> [batch_size, num_fields, embedding_dim] -> sum -> [batch_size, k]^2 -> [4096, 10]
         square_of_sum = torch.pow(torch.sum(x, dim=1), 2)
@@ -93,6 +90,7 @@ class FeaturesCross(nn.Module):
         if self.reduce_sum:
             # each sample sum along k dims, sum([batch_size, k] - [batch_size, k]) -> [batch_size, 1] -> [4096, 1]
             output = torch.sum(output, dim=1, keepdim=True)
+
         return 0.5 * output
 
 
