@@ -62,7 +62,7 @@ class NeuralFactorizationMachineModelV2(nn.Module):
         self.linear = FeaturesLinear(field_dims)
         # feature interaction layer same as FM cross layer
         self.fm = torch.nn.Sequential(
-            FeaturesCross(field_dims, embed_dim, reduce_sum=False),
+            FeaturesCross(reduce_sum=False),
             nn.BatchNorm1d(embed_dim),
             nn.Dropout(dropout)
         )

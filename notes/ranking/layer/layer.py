@@ -70,7 +70,7 @@ class FeaturesCross(nn.Module):
     Feature cross layer, output = 0.5 * sum_f((sum_i(vi_f * x_i))^2 - sum_i(vi_f^2 * x_i^2))
     Calculate each feature cross interaction weight.
     """
-    def __init__(self, field_dims, embed_dim, reduce_sum=True):
+    def __init__(self, reduce_sum=True):
         super().__init__()
         self.reduce_sum = reduce_sum
 
