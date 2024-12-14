@@ -26,12 +26,13 @@ class DeepFactorizationMachineModel(nn.Module):
     def forward(self, x):
         """
         :param x: [batch_size, num_fields]
+        :return: [batch_size, 1]
         """
         # x -> [batch_size, num_fields]
         # embedding(x) -> [batch_size, num_fields, embed_dim]
         embeddings = self.embedding(x)
         # linear -> [batch_size, 1] + fm -> [batch_size, 1] + view -> [batch_size, num_fields * embed_dim]
-        # -> [batch_size, mlp_dims[-1] ex: 1] -> [batch_size, 1]
+        # -> mlp -> [batch_size, mlp_dims[-1] ex: 1] -> [batch_size, 1]
         output = self.linear(x) + self.fm(embeddings) + self.mlp(embeddings.view(-1, self.embed_output_dim))
 
         return torch.sigmoid(output)
