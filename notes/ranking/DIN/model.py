@@ -1,37 +1,7 @@
 import torch
 import torch.nn as nn
 
-from notes.ranking.layer.layer import FeaturesEmbedding
-
-
-class Dice(nn.Module):
-    """
-    Dice activation function. y_i = alpha_i * (1 - p_i) * y_i + p_i * y_i
-    p_i = 1 / (1 + e^(-E(y_i)/sqrt(Var(y_i) + theta))
-    p is same like take BN of x first then sigmoid get probability.
-    """
-    def __init__(self):
-        super().__init__()
-        # hyper-parameter
-        self.alpha = nn.Parameter(torch.zeros((1,)))
-
-    def forward(self, x):
-        """
-        :param x: [batch_size, num_fields, embedd_dim]
-        :return: [batch_size, num_fields, embedd_dim]
-        """
-        # calculate mean across mini-batch, avg -> [num_fields, embedd_dim]
-        avg = x.mean(dim=0)
-        # calculate std across mini-batch, std -> [num_fields, embedd_dim]
-        std = x.std(dim=0)
-        # same as BN, without parameters, norm_x -> [batch_size, num_fields, embedd_dim]
-        norm_x = (x - avg) / std
-        # sigmoid -> [batch_size, num_fields, embedd_dim]
-        p = torch.sigmoid(norm_x)
-        # [batch_size, num_fields] * constant -> [batch_size, num_fields, embedd_dim]
-        output = x.mul(p) + self.alpha * x.mul(1 - p)
-
-        return output
+from notes.ranking.layer.layer import FeaturesEmbedding, Dice
 
 
 class ActivationUnit(nn.Module):
