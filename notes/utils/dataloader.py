@@ -76,9 +76,9 @@ def create_dataset(dataset='criteo', read_part=True, sample_num=100000, task='cl
     """
     if dataset == 'criteo':
         return CriteoDataset('../../data/criteo-100k.txt', read_part=read_part, sample_num=sample_num).to(device)
-    # elif dataset == 'movielens':
-    #     return MovieLensDataset('../dataset/ml-latest-small-ratings.txt', read_part=read_part, sample_num=sample_num,
-    #                             task=task).to(device)
+    elif dataset == 'adult':
+        return AdultDataset('../../data/adult_train.csv', '../../data/adult_test.csv',
+                            read_part=read_part, sample_num=sample_num).to(device)
     elif dataset == 'amazon-books':
         return AmazonBooksDataset('../../data/amazon-books-100k.txt', read_part=read_part, sample_num=sample_num,
                                   sequence_length=sequence_length).to(device)
@@ -130,7 +130,7 @@ class CriteoDataset(Dataset):
     """
 
     def __init__(self, file, read_part=True, sample_num=100000):
-        super(CriteoDataset, self).__init__()
+        super().__init__()
 
         names = ['label', 'I1', 'I2', 'I3', 'I4', 'I5', 'I6', 'I7', 'I8', 'I9', 'I10', 'I11',
                  'I12', 'I13', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C11',
@@ -217,10 +217,89 @@ class AmazonBooksDataset(Dataset):
         return field_dims, (train_x, train_y), (valid_x, valid_y), (test_x, test_y)
 
 
+class AdultDataset(Dataset):
+    """
+    Here we only support transfer all input features value into id,
+    no difference between sparse or dense features.
+    """
+    def __init__(self, train_file, test_file, read_part=True, sample_num=100000):
+        super().__init__()
+        # features column name
+        names = ['age', 'workclass', 'fnlwgt', 'education', 'education_num', 'marital_status', 'occupation',
+                 'relationship', 'race', 'gender', 'capital_gain', 'capital_loss', 'hours_per_week',
+                 'native_country', 'income_bracket']
+
+        # read part or not
+        if read_part:
+            data_df_train = pd.read_csv(train_file, header=None, names=names, nrows=sample_num)
+            data_df_test = pd.read_csv(test_file, header=None, names=names, nrows=sample_num)
+        else:
+            data_df_train = pd.read_csv(train_file, header=None, names=names)
+            data_df_test = pd.read_csv(test_file, header=None, names=names)
+
+        # concat together to feature preprocess same time
+        data = pd.concat([data_df_train, data_df_test], axis=0)
+
+        # create two labels to do mtl job
+        # first label use income column, if over 50k then 1, otherwise is 0
+        data['label_income'] = data['income_bracket'].map({' >50K.': 1, ' >50K': 1, ' <=50K.': 0, ' <=50K': 0})
+        # second label use marital column, if no married then 1, otherwise is 0
+        data['label_marital'] = data['marital_status'].apply(lambda x: 1 if x == ' Never-married' else 0)
+        # drop original columns since already transfer as label
+        data.drop(labels=['marital_status', 'income_bracket'], axis=1, inplace=True)
+
+        # define dense and sparse features
+        columns = data.columns.values.tolist()
+        dense_features = ['fnlwgt', 'education_num', 'capital_gain', 'capital_loss', 'hours_per_week']
+        sparse_features = [col for col in columns if
+                           col not in dense_features and col not in ['label_income', 'label_marital']]
+        features = sparse_features + dense_features
+
+        # 缺失值填充，数值特征填充为0，类别特征填充为 -1 的string
+        data[sparse_features] = data[sparse_features].fillna('-1')
+        data[dense_features] = data[dense_features].fillna(0)
+
+        # 连续型特征等间隔分箱
+        est = KBinsDiscretizer(n_bins=100, encode='ordinal', strategy='uniform')
+        data[dense_features] = est.fit_transform(data[dense_features])
+
+        # 离散型特征转换成连续数字，为了在与参数计算时使用索引的方式计算，而不是向量乘积
+        # 这里用ordinal而不是label，为了保存原始的顺序意义并且作用在所有类别特征上，label一般作用在target上
+        data[features] = OrdinalEncoder().fit_transform(data[features])
+
+        self.data = data[features + ['label_income'] + ["label_marital"]].values
+
+    def train_valid_test_split(self, train_size=0.8, valid_size=0.1, test_size=0.1):
+        """
+        train valid and test split function, note here we have two labels
+        """
+        # each features number of unique value
+        # ex: fea1: [0, 1, 2, 3] -> 4 dim, fea2: [0, 1, 2] -> 3 dim, fea3: [0, 1, 2, 3, 4] -> 5 dim
+        # then field_dims -> [4, 3, 5]
+        # not last two are label column in data so will be exclude
+        field_dims = (self.data.max(axis=0).astype(int) + 1).tolist()[:-2]
+
+        train, valid_test = train_test_split(self.data, train_size=train_size, random_state=2021)
+
+        valid_size = valid_size / (test_size + valid_size)
+        valid, test = train_test_split(valid_test, train_size=valid_size, random_state=2021)
+
+        train_x = torch.tensor(train[:, :-2], dtype=torch.long).to(self.device)
+        valid_x = torch.tensor(valid[:, :-2], dtype=torch.long).to(self.device)
+        test_x = torch.tensor(test[:, :-2], dtype=torch.long).to(self.device)
+        # here we don't need to un-squeeze dim, since we slice 2 columns not select 1 column
+        train_y = torch.tensor(train[:, -2:], dtype=torch.float).to(self.device)
+        valid_y = torch.tensor(valid[:, -2:], dtype=torch.float).to(self.device)
+        test_y = torch.tensor(test[:, -2:], dtype=torch.float).to(self.device)
+
+        return field_dims, (train_x, train_y), (valid_x, valid_y), (test_x, test_y)
+
+
 class BatchLoader:
     """
     Loading the dataset by batch
     """
+
     def __init__(self, x, y, batch_size=128, shuffle=True):
         # check length should be equal
         assert len(x) == len(y)
