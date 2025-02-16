@@ -15,32 +15,38 @@ class EarlyStopper:
     If metric is improved or metric not continues to improve smaller than number of trials, then keep training.
     Otherwise, stop training.
     """
-    def __init__(self, model, num_trials=50):
+    def __init__(self, model, num_trials=50, num_tasks=1):
+        # init for all type of jobs including multitask job
         self.num_trials = num_trials
         self.trial_counter = 0
-        self.best_metric = -1e9
-        self.best_state = deepcopy(model.state_dict())
+        self.best_metric = num_tasks * [-1e9]
+        self.best_state = num_tasks * [deepcopy(model.state_dict())]
         self.model = model
+        self.num_tasks = num_tasks
+        self.continuable = None
 
     def is_continuable(self, metric):
+        # each time check init with True first, if one task meet below case then will change to False
+        self.continuable = False
         # maximize metric
         # if metric is keep increase
-        if metric > self.best_metric:
-            # update best metric
-            self.best_metric = metric
-            # init trail counter
-            self.trial_counter = 0
-            # record model state
-            self.best_state = deepcopy(self.model.state_dict())
-            return True
-        # if metric not improve times smaller than trials
-        elif self.trial_counter + 1 < self.num_trials:
-            # update number of trial counter
-            self.trial_counter += 1
-            return True
-        # otherwise stop training
-        else:
-            return False
+        for i in range(self.num_tasks):
+            if metric[i] > self.best_metric[i]:
+                # update best metric
+                self.best_metric[i] = metric[i]
+                # init trail counter
+                self.trial_counter = 0
+                # record model state
+                self.best_state[i] = deepcopy(self.model.state_dict())
+                self.continuable = True
+            # if metric not improve times smaller than trials
+            elif self.trial_counter + 1 < self.num_trials:
+                # update number of trial counter
+                self.trial_counter += 1
+                self.continuable = True
+
+        # if all tasks not meet above continuable case then stop training
+        return self.continuable
 
 
 class Trainer:
