@@ -15,7 +15,7 @@
 ## 1.2.1 推荐系统的逻辑框架
 在获知用户信息、物品信息、场景信息的基础上，推荐系统要处理的问题可定义为：对用户 U（user），在特定场景 C（context）下，针对海量的物品信息，构建函数 f（U,I,C），预测用户对特定候选物品（item）的喜好程度，再根据喜好程度对所有候选物品排序，生成推荐列表的问题。
   <p style="text-align: center">
-    <img src="./pics/1.2.1_推荐系统逻辑框架.png">
+    <img src="./pics/chapter1/1.2.1_推荐系统逻辑框架.png">
       <figcaption style="text-align: center">
         推荐系统逻辑框架
       </figcaption>
@@ -26,7 +26,7 @@
 - 数据和信息相关的问题，即用户信息，物品信息，场景信息分别是什么？如何存储、更新和处理？逐渐发展为推荐系统中融合了数据离线批处理、实时流处理的数据流框架。
 - 推荐系统算法和模型相关的问题，即推荐模型如何训练、如何预测、如何达成更好地推荐效果？逐渐发展细化为推荐系统中集训练（training）、评估（evaluation）、部署（deployment）、线上推断（online inference）为一体的模型框架。
     <p style="text-align: center">
-      <img src="./pics/1.2.2_推荐系统技术架构.png">
+      <img src="./pics/chapter1/1.2.2_推荐系统技术架构.png">
         <figcaption style="text-align: center">
           推荐系统技术架构
         </figcaption>
