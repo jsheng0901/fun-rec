@@ -16,7 +16,7 @@ class EntireSpaceMultitaskModel(nn.Module):
         super().__init__()
         # build embedding layer for input x to transfer sparse tensor to dense vector, ex: [sum(fields_dims), embed_dim]
         self.embedding = FeaturesEmbedding(field_dims, embed_dim)
-        # get embedding output dims, will concat all field embed into one vector, for mlp and cross layer input
+        # get embedding output dims, will concat all field embed into one vector, for later mlp input
         self.embed_output_dim = len(field_dims) * embed_dim
         # ctr mlp layer ex: [embed_output_dim, 256, 128, 64, 16, 1]
         self.ctr_dnn = MultiLayerPerceptron(self.embed_output_dim, mlp_dims, dropout)
