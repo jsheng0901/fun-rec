@@ -26,7 +26,7 @@ class EntireSpaceMultitaskModel(nn.Module):
     def forward(self, x):
         """
         :param x: [batch_size, num_fields]
-        :return: [batch_size, 2]
+        :return: [batch_size, num_tasks]
         """
         # x -> [batch_size, num_fields]
         # embed(x) -> [batch_size, num_fields, embed_dim]
