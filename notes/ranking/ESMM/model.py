@@ -8,6 +8,7 @@ class EntireSpaceMultitaskModel(nn.Module):
     A pytorch implementation of Entire Space Multi-Task Model architecture.
     Here we only support transfer all input features into embedding,
     no difference between sparse or dense features.
+    The model only support classification task, will calculate sigmoid as output.
     For two towers, we simply use same hyperparameters.
     Core idea from P(z=1|y=1,x) = P(z=1,y=1|x) / P(y=1|x), cvr = ctcvr / ctr.
     """
