@@ -24,9 +24,6 @@ class MultigateMixtureOfExpertsModel(nn.Module):
         self.embedding = FeaturesEmbedding(field_dims, embed_dim)
         # get embedding output dims, will concat all field embed into one vector, for later mlp input
         self.embed_output_dim = len(field_dims) * embed_dim
-        # self.expert_dnn_hidden_units = expert_dnn_hidden_units
-        # self.gate_dnn_hidden_units = gate_dnn_hidden_units
-        # self.tower_dnn_hidden_units = tower_dnn_hidden_units
 
         # expert dnn layer, ex: [embed_output_dim, 256, 128, 64, 16], no output layer here
         self.expert_dnn = nn.ModuleList([MultiLayerPerceptron(self.embed_output_dim, expert_mlp_dims, dropout,
