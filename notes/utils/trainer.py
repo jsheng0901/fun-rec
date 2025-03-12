@@ -27,6 +27,9 @@ class EarlyStopper:
         self.continuable = None
 
     def is_continuable(self, metric):
+        # check if it's single task, then metric is just float not list, convert into list for later loop
+        if isinstance(metric, float):
+            metric = [metric]
         # each time check init with True first, if one task meet below case then will change to False
         self.continuable = False
         # maximize metric
