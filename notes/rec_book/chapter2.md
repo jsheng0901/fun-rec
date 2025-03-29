@@ -397,3 +397,6 @@ GBDT+LR组合模型对于推荐系统领域的重要性在于，它大大推进�
       </figcaption>
     </img>
   </p>
+
+## reference
+- [学习笔记](https://zhuanlan.zhihu.com/p/616952071)
