@@ -304,7 +304,7 @@ DCN-M中的权重矩阵 W 能够反映不同交叉特征的重要程度，import
 - cross net每一层之间本身也可以实现stacked或者concatenation，实验证明两种情况都可以取得不错的效果，stacked 扑捉到 higher-order feature interactions，concatenation 扑捉到 complimentary interactions。
 - 使用低秩矩阵，降低到 (input size)/4 的维度可以保持得到和 full-rank DCN-V2 一样的accuracy。
 
-## 5 总结和未来研究方向
+## 9 总结和未来研究方向
 - 总结
   - DCN-M模型能够简单且有效地建模显式特征交叉
   - 混合低秩矩阵在模型效果和时延上实现了更好的权衡
