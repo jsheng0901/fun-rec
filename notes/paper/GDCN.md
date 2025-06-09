@@ -48,7 +48,7 @@
 ## 3 提出的模型结构
 - GCN and DNN networks: (a) GDCN-S and (b) GDCN-P.
 <p style="text-align: center">
-    <img src="./pics/GDCN_3_模型结构.png">
+    <img src="./pics/GDCN/GDCN_3_模型结构.png">
       <figcaption style="text-align: center">
         GDCN_模型结构
       </figcaption>
@@ -60,7 +60,7 @@
 
 ## 3.2 Gated Cross Network (GCN)
 <p style="text-align: center">
-    <img src="./pics/GDCN_3.2_模型特征交叉层.png">
+    <img src="./pics/GDCN/GDCN_3.2_模型特征交叉层.png">
       <figcaption style="text-align: center">
         GDCN_模型特征交叉层
       </figcaption>
@@ -105,7 +105,7 @@ DNN 的目标是建模隐式feature interactions，基本上和其它的 Deep&Wi
   - 本质上其实就是对每个embedding table训练完后的特征，进行降维，并选择最佳解释的降维维度。
 
 <p style="text-align: center">
-    <img src="./pics/GDCN_4_特征维度对比.png">
+    <img src="./pics/GDCN/GDCN_4_特征维度对比.png">
       <figcaption style="text-align: center">
         GDCN_特征维度对比
       </figcaption>
@@ -124,7 +124,7 @@ DNN 的目标是建模隐式feature interactions，基本上和其它的 Deep&Wi
 ## 5.1 Experiment Setup
 - Datasets 分析
 <p style="text-align: center">
-    <img src="./pics/GDCN_5.1_数据集.png">
+    <img src="./pics/GDCN/GDCN_5.1_数据集.png">
       <figcaption style="text-align: center">
         GDCN_数据集
       </figcaption>
@@ -156,7 +156,7 @@ DNN 的目标是建模隐式feature interactions，基本上和其它的 Deep&Wi
   - 在所有实验中，与最佳baseline 相比的改进具有统计学意义（p<0.01），在Table 3  和Table 4 中用 ★ 表示。
 
 <p style="text-align: center">
-    <img src="./pics/GDCN_5.1_实验结果对比1.png">
+    <img src="./pics/GDCN/GDCN_5.1_实验结果对比1.png">
       <figcaption style="text-align: center">
         GDCN_实验结果对比
       </figcaption>
@@ -164,7 +164,7 @@ DNN 的目标是建模隐式feature interactions，基本上和其它的 Deep&Wi
     </p>
 
 <p style="text-align: center">
-    <img src="./pics/GDCN_5.1_实验结果对比2.png">
+    <img src="./pics/GDCN/GDCN_5.1_实验结果对比2.png">
       <figcaption style="text-align: center">
         GDCN_实验结果对比
       </figcaption>
@@ -185,7 +185,7 @@ DNN 的目标是建模隐式feature interactions，基本上和其它的 Deep&Wi
 
 ## 5.3 Deeper 高阶特征交叉
 <p style="text-align: center">
-    <img src="./pics/GDCN_5.3_高阶特征交叉效果对比1.png">
+    <img src="./pics/GDCN/GDCN_5.3_高阶特征交叉效果对比1.png">
       <figcaption style="text-align: center">
         GDCN_高阶特征交叉效果对比1
       </figcaption>
@@ -193,7 +193,7 @@ DNN 的目标是建模隐式feature interactions，基本上和其它的 Deep&Wi
     </p>
 
 <p style="text-align: center">
-    <img src="./pics/GDCN_5.3_高阶特征交叉效果对比2.png">
+    <img src="./pics/GDCN/GDCN_5.3_高阶特征交叉效果对比2.png">
       <figcaption style="text-align: center">
         GDCN_高阶特征交叉效果对比2
       </figcaption>
@@ -222,7 +222,7 @@ DNN 的目标是建模隐式feature interactions，基本上和其它的 Deep&Wi
 ### 5.4.2 Dynamic instance interpretability
 GCN 通过information gate 学到的gate weights 提供动态可解释性，为每个input instance 提供bit-wise 的和field-wise 的解释。从Criteo 数据集中随机选择两个实例来可视化学到的gate weights ，并检查从第一个到第三个gated cross layer 的gate values。
 <p style="text-align: center">
-    <img src="./pics/GDCN_5.4.2_动态特征可解释性.png">
+    <img src="./pics/GDCN/GDCN_5.4.2_动态特征可解释性.png">
       <figcaption style="text-align: center">
         GDCN_动态特征可解释性
       </figcaption>
@@ -235,7 +235,7 @@ GCN 通过information gate 学到的gate weights 提供动态可解释性，为�
 - 从Figure 6(b) 中，我们可以识别出重要的或不重要的特定特征，例如特征{#20, #23, #28} 很重要，而特征{#6, #11, #30} 不重要。我们还可以从input instance 中引用这些specific important features 的名称。一旦我们知道哪些特征有影响，我们就可以解释甚至干预有助于用户点击率的相关特征。
 
 <p style="text-align: center">
-    <img src="./pics/GDCN_5.4.2_动态特征可解释性平均结果.png">
+    <img src="./pics/GDCN/GDCN_5.4.2_动态特征可解释性平均结果.png">
       <figcaption style="text-align: center">
         GDCN_动态特征可解释性平均结果
       </figcaption>

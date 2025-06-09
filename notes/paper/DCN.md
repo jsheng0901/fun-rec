@@ -34,7 +34,7 @@
 ## 2 DCN网络结构
 DCN模型从嵌入和堆积层（embedding and stacking layer）开始，接着是并行的Cross Network和深度网络，最后是组合层，它结合了两个网络的输出。完整的DCN模型如图1所示。
 <p style="text-align: center">
-    <img src="./pics/DCN_模型结构图.png">
+    <img src="./pics/DCN/DCN_模型结构图.png">
       <figcaption style="text-align: center">
         DCN_模型结构图
       </figcaption>
@@ -46,7 +46,7 @@ DCN模型从嵌入和堆积层（embedding and stacking layer）开始，接着�
 - 为了降低维度，采用embedding process将二值化特征变换为稠密实值向量（通常称为嵌入向量，embedding vectors）。
 - 最后，我们将嵌入（embedding）向量和归一化的稠密特征 x_dense 拼接成一个向量输入到网络中去。
     - <p style="text-align: center">
-        <img src="./pics/DCN_2.1_输入.png">
+        <img src="./pics/DCN/DCN_2.1_输入.png">
           <figcaption style="text-align: center">
             DCN_输入
           </figcaption>
@@ -56,7 +56,7 @@ DCN模型从嵌入和堆积层（embedding and stacking layer）开始，接着�
 ## 2.2 Cross Network
 Cross Network的核心思想是以有效的方式进行显示的特征交叉。公式如图。
 <p style="text-align: center">
-    <img src="./pics/DCN_2.2_cross_net_公式.png">
+    <img src="./pics/DCN/DCN_2.2_cross_net_公式.png">
       <figcaption style="text-align: center">
         DCN_cross_net_公式
       </figcaption>
@@ -66,7 +66,7 @@ Cross Network的核心思想是以有效的方式进行显示的特征交叉。�
 - 公式里面本质上每一次的输入都伴随着上一层的原始输出，映射函数 f，本质上拟合的是每一层的 x_l+1 − x_l 的residual。这样类似Resnet的思路保证不会太偏离，同时保证梯度不会消失。 
 - High-degree Interaction Across Features，Cross Network的特殊结构使得交叉特征阶数随着层深度增加而增大。对于第l层的最高多项式次数是l+1。事实上，Cross Network包含了从1到（l+1）的所有交叉项。
 <p style="text-align: center">
-    <img src="./pics/DCN_2.2_cross_net_结构图.png">
+    <img src="./pics/DCN/DCN_2.2_cross_net_结构图.png">
       <figcaption style="text-align: center">
         DCN_cross_net_结构图
       </figcaption>
@@ -120,7 +120,7 @@ Cross Network的核心思想是以有效的方式进行显示的特征交叉。�
 
 ### 不同模型在 logloss 指标上的对比
 <p style="text-align: center">
-    <img src="./pics/DCN_4.4_模型表现对比.png">
+    <img src="./pics/DCN/DCN_4.4_模型表现对比.png">
       <figcaption style="text-align: center">
         DCN_模型表现对比
       </figcaption>
@@ -136,7 +136,7 @@ Cross Network的核心思想是以有效的方式进行显示的特征交叉。�
 ### 不同维度的对比DCN和DNN
 - 达到同样的 logloss 指标需要的参数个数
   - <p style="text-align: center">
-        <img src="./pics/DCN_4.4_同样的损失不同参数个数对比.png">
+        <img src="./pics/DCN/DCN_4.4_同样的损失不同参数个数对比.png">
           <figcaption style="text-align: center">
             同样的损失不同参数个数对比
           </figcaption>
@@ -144,7 +144,7 @@ Cross Network的核心思想是以有效的方式进行显示的特征交叉。�
         </p>
 - 同样参数下，能达到最小的 logloss 指标
   - <p style="text-align: center">
-        <img src="./pics/DCN_4.4_同样参数下最小的损失对比.png">
+        <img src="./pics/DCN/DCN_4.4_同样参数下最小的损失对比.png">
           <figcaption style="text-align: center">
             同样参数下最小的损失对比
           </figcaption>
@@ -152,7 +152,7 @@ Cross Network的核心思想是以有效的方式进行显示的特征交叉。�
         </p>
 - 同样地超参数下，增加cross net 层数对 logloss 指标的影响，可以看出增加更高维度的特征交叉并不一定会对 logloss 指标有帮助。相反有时候会有反作用。
   - <p style="text-align: center">
-        <img src="./pics/DCN_4.4_cross_net层数影响.png">
+        <img src="./pics/DCN/DCN_4.4_cross_net层数影响.png">
           <figcaption style="text-align: center">
             cross net层数对 logloss 指标的变化
           </figcaption>

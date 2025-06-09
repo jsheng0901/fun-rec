@@ -57,7 +57,7 @@
 
 ## 4.1 概括
 <p style="text-align: center">
-    <img src="./pics/AutoInt_4.1_模型结构.png">
+    <img src="./pics/AutoInt/AutoInt_4.1_模型结构.png">
       <figcaption style="text-align: center">
         AutoInt_模型结构
       </figcaption>
@@ -71,7 +71,7 @@
 
 ## 4.2 输入层
 <p style="text-align: center">
-    <img src="./pics/AutoInt_4.2_输入层.png">
+    <img src="./pics/AutoInt/AutoInt_4.2_输入层.png">
       <figcaption style="text-align: center">
         AutoInt_输入层
       </figcaption>
@@ -134,7 +134,7 @@
 - 数据集：
   四个public real word data，数据statistic如下：
   <p style="text-align: center">
-      <img src="./pics/AutoInt_5.1.1_数据对比.png">
+      <img src="./pics/AutoInt/AutoInt_5.1.1_数据对比.png">
         <figcaption style="text-align: center">
           AutoInt_数据对比
         </figcaption>
@@ -179,7 +179,7 @@
 
 ## 5.2 Quantitative Results (RQ1)
 <p style="text-align: center">
-    <img src="./pics/AutoInt_5.2_实验结果对比.png">
+    <img src="./pics/AutoInt/AutoInt_5.2_实验结果对比.png">
       <figcaption style="text-align: center">
         AutoInt_实验结果对比
       </figcaption>
@@ -191,7 +191,7 @@
 - 高价特征交叉明显对模型效果有贡献
 
 <p style="text-align: center">
-    <img src="./pics/AutoInt_5.2_实验性能对比.png">
+    <img src="./pics/AutoInt/AutoInt_5.2_实验性能对比.png">
       <figcaption style="text-align: center">
         AutoInt_实验性能对比
       </figcaption>
@@ -203,7 +203,7 @@
 - 实验对比里面AutoInt采用Deep and Cross 结构，保证了一致性对比
 
 <p style="text-align: center">
-    <img src="./pics/AutoInt_5.2_实验参数对比.png">
+    <img src="./pics/AutoInt/AutoInt_5.2_实验参数对比.png">
       <figcaption style="text-align: center">
         AutoInt_实验参数对比
       </figcaption>
@@ -216,7 +216,7 @@
 
 ### 5.3.1 Influence of Residual Structure
 <p style="text-align: center">
-    <img src="./pics/AutoInt_5.3.1_模型残差链接对比.png">
+    <img src="./pics/AutoInt/AutoInt_5.3.1_模型残差链接对比.png">
       <figcaption style="text-align: center">
         AutoInt_模型残差链接对比
       </figcaption>
@@ -227,7 +227,7 @@
 
 ### 5.3.2 Influence of Network Depths
 <p style="text-align: center">
-    <img src="./pics/AutoInt_5.3.2_模型层数对比.png">
+    <img src="./pics/AutoInt/AutoInt_5.3.2_模型层数对比.png">
       <figcaption style="text-align: center">
         AutoInt_模型层数对比
       </figcaption>
