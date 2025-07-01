@@ -345,7 +345,7 @@ DCN-M中的权重矩阵 W 能够反映不同交叉特征的重要程度，import
 ## 在工业上通常会怎么用，如何实际应用
 - 直接使用TF-ranking里面模型，或者DeepCTR-pytorch的版本
 - 参考论文里面 Practical Learnings 这一段，设置参数range调参。
-- 目前实际使用情况中，stacked + 2 layers 起到的效果比较好。
+- 目前实际使用情况中，parallel + 3 layers 起到的效果比较好。
 
 # 参考
 - https://zhuanlan.zhihu.com/p/353223660
