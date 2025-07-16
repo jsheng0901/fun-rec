@@ -145,7 +145,7 @@ class EmbeddingsInteraction(nn.Module):
     def forward(self, x):
         """
         :param x: [batch_size, num_fields, embedding_dim]
-        :return: [batch_size, num_fields*(num_fields)//2, embedding_dim]
+        :return: [batch_size, num_fields * (num_fields - 1) // 2, embedding_dim]
         """
         num_fields = x.shape[1]
         row, col = [], []
@@ -155,7 +155,7 @@ class EmbeddingsInteraction(nn.Module):
                 row.append(i)
                 col.append(j)
         # x1: [batch_size, 1, embedding_dim] * x2: [batch_size, 1, embedding_dim] -> [batch_size, 1, embedding_dim]
-        # we have num_fields * (num_fields)//2 combination, mul will keep same output shape as input
+        # we have num_fields * (num_fields - 1) // 2 combination, mul will keep same output shape as input
         # then we have [batch_size, num_fields * (num_fields)//2, embedding_dim] output
         interaction = torch.mul(x[:, row], x[:, col])
 
