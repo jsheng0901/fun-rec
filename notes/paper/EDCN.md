@@ -312,7 +312,7 @@ bridge module and regulation module ，可以无缝应用于主流的并行结�
 - 参考论文里面 5.1.2 这一段，设置参数range调参
 - 这两个模块都可以考虑加入进实际工作中，参数占比很小，同时计算量也很小
 - bridge的实现问题是如何在实际工作中保证两个tower的输出是一样的维度
-- regulation的问题是只能作用在有embedding的输入上面，然而实际工作中会保留很多人工特征工程并不全都是embedding的特征
+- regulation的问题是只能作用在有embedding的输入上面，然而实际工作中会保留很多人工特征工程并不全都是embedding的特征，可以借鉴直接在bit-level做。这样就不用担心特征没有embedding的问题。
 
 # 参考
 - https://www.huaxiaozhuan.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/chapters/9_ctr_prediction7.html
