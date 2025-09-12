@@ -5,6 +5,7 @@
 - 公司：Teads 
 - 链接：https://arxiv.org/html/2506.21624v1
 - Code：无，`待补充`
+- `泛读`
 
 # 内容
 
