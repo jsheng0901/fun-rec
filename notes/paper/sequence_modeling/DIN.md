@@ -21,7 +21,7 @@
   - 帮助更好地落地实际业务中的大数据大模型，防止了模型的过拟合
 
 ## 1 介绍
-主要贡献：
+**主要贡献**：
 - 提出新模型（DIN）：针对固定长度向量无法有效表达用户多样化兴趣的局限性，我们提出了深度兴趣网络（DIN）。
   - 其核心是通过局部激活单元，能够根据给定的广告自适应地学习用户历史行为中的兴趣表征，从而极大地提升了模型表达能力，更好地捕捉了用户兴趣的多样性。
 - 开发两项训练技术：为了高效训练工业级大规模深度网络，我们开发了两项新技术：
@@ -42,7 +42,7 @@
 
 ## 4.1 Feature Representation
 <p style="text-align: center">
-    <img src="./pics/DIN/DIN_4.1_特征处理.png">
+    <img src="../pics/DIN/DIN_4.1_特征处理.png">
       <figcaption style="text-align: center">
         DIN_特征处理
       </figcaption>
@@ -56,7 +56,7 @@
 
 ## 4.2 Base Model(Embedding&MLP)
 <p style="text-align: center">
-    <img src="./pics/DIN/DIN_4.2_base_model.png">
+    <img src="../pics/DIN/DIN_4.2_base_model.png">
       <figcaption style="text-align: center">
         DIN_base_model
       </figcaption>
@@ -78,7 +78,7 @@
 
 ## 4.3 The structure of Deep Interest Network
 <p style="text-align: center">
-    <img src="./pics/DIN/DIN_4.3_模型结构.png">
+    <img src="../pics/DIN/DIN_4.3_模型结构.png">
       <figcaption style="text-align: center">
         DIN_模型结构
       </figcaption>
@@ -94,7 +94,7 @@
   - 本质上还是pooling，但是是带有权重的pooling，这个权重和候选广告相关
 
 <p style="text-align: center">
-    <img src="./pics/DIN/DIN_4.3_局部激活公式.png">
+    <img src="../pics/DIN/DIN_4.3_局部激活公式.png">
       <figcaption style="text-align: center">
         DIN_局部激活公式
       </figcaption>
@@ -116,3 +116,84 @@
   - 一个可能的方向是，设计一个独特的结构去model这个数据
 
 ## 5 TRAINING TECHNIQUES
+
+## 5.1 Mini-batch Aware Regularization
+- 问题：
+  - 如果不进行正则化，原始数据压缩在整个向量空间中的很小区间内，模型训练会快速的陷入过拟合风险
+  - 对于像ID这样的特有特征，数量往往十分庞大，用户级别上是亿级的，item级别也是百万千万级别的，直接计算L2正则项的代价较高，不过模型学习到的就是embedding信息
+  - 用户数据符合 长尾定律long-tail law，也就是说很多的feature id只出现了几次，而一小部分feature id出现很多次。这在训练过程中增加了很多噪声，并且加重了过拟合。
+- 方法：
+  - 提出一个近似方案，参数更新即可只使用小批量形式中出现的参数
+  - 本质上就是对于每个batch，只调整（优化）batch中出现过的参数
+  - 对于出现频率大的id，给与较小的正则化强度， 参数调整的幅度越小
+  - 对于出现频率小的id，给予较大的正则化强度。参数调整的越大。
+  - 实际效果中，并不会特别明显，因为单一batch的数据质量相比整体数据分布是很片面的，虽然比不用L2还是要好一些
+
+## 5.2 Data Adaptive Activation Function
+- 问题：
+  - 传统的PReLU上的控制函数在0值有一个越阶，层间如果分布不同的话就不合适了
+- 方法：
+  - 提出Dice 激活函数，可以看成PRelU的通用版本（当Dice里面均值和方差设置为0的时候），本质上是调整越阶点应该由数据决定，通过不同的样本分布来计算
+  - 采用小批量内的样本均值和方差完成自适应过程，达到一个平滑处理越阶点。
+
+## 6 EXPERIMENTS
+<p style="text-align: center">
+    <img src="../pics/DIN/DIN_6_AUC_公式.png">
+      <figcaption style="text-align: center">
+        DIN_AUC_公式
+      </figcaption>
+    </img>
+  </p>
+
+- 模型的评判指标主要是AUC，但是传统的AUC并没有考虑到每个用户的活跃度不一样，这就导致每个用户对于整体的点击率的贡献不一样。
+- 采用先计算验证集中每个用户的AUC，然后带上展现的权重求和得到最终的AUC。从而调整后的AUC能更好的表现出模型在活跃用户上的正负样本的区分能力。
+- 本质上就是计算一个带权重的AUC，权重由用户的impression的次数决定，来衡量用户活跃度
+
+## 6.7 Result from online A/B testing
+- 线上取得了不错的结果：
+  - 10% CTR
+  - 3.8% RPM(Revenue Per Mille)
+- 线上需要大量的工程能力去实现latency
+  - 合并CPU的请求，提升GPU利用率
+  - GPU内存调优
+  - 并发使用CUDA，提升矩阵计算效率。
+
+## 6.8 Visualization of DIN
+- 生成的 Embedding，用户历史信息中和候选广告明显有相同类的id的attention weight更大
+- 生成的 Embedding 也有着不错的聚类效果
+
+## 7 总结
+- 提出DIN模型，解决了固定长度用户用户表达的问题，实现了自适应的学习用户历史行为和候选ID的关系
+- 工程能力上为了实现：
+  - 提出了小批量的参数更新正则化
+  - 提出Dice激活函数、自适应正则，提升了模型性能与收敛速度。
+
+# 思考
+
+## 本篇论文核心是讲了个啥东西
+- 参看section 7
+
+## 是为啥会提出这么个东西，为了解决什么问题
+- 问题：
+  - 将用户丰富的历史行为（如点击过的商品ID）通过embedding和pooling压缩成一个固定长度的表征向量，无法根据不同的候选广告进行自适应变化
+  - 用户的历史行为信息会被浪费或者丢失掉，在传统的池化过程中
+  - 同时为了增强表达能力而粗暴地增加向量维度，又会带来参数量爆炸和过拟合的风险
+  - 工程上难以实现，用户ID和商品ID的embedding维度非常大
+- 贡献：
+  - 提出DIN模型，自适应的学习用户历史行为和候选ID的关系。用attention unit 来实现带权重的pooling
+  - 提出小批量的参数更新正则化，加速了L2的计算速度在参数更新阶段
+  - 提出了Dice激活函数、自适应正则，提升了模型性能与收敛速度。
+
+## 为啥这个新东西会有效，有什么优势
+- 对比传统 W&D 之类的特征交叉模型
+  - 提出激活单元，实现了自适应的学习候选广告和用户历史行为的关系
+
+## 与这个新东西类似的东西还有啥，相关的思路和模型
+- 系列的sequence model，本质上都是找用户的兴趣演变过程和候选ID的关系
+  - DIEN
+  - DSIN
+  - BST
+
+## 在工业上通常会怎么用，如何实际应用
+- 十分建议尝试一下在搜索里面使用，用户当前的搜索行为和产品可能和之前的搜索记录会有关系
+- 整个思路都值得复习一下，但是搜索里面的用户行为不一致，比如有点击，加入购物车，购买，需要思考如何组成用户历史行为
