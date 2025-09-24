@@ -180,6 +180,93 @@
 
 - 如何融合注意力机制中的局部激活能力和GRU的序列学习
   - GRU with attentional input (AIGRU)
+    - AIGRU使用注意力评分影响兴趣进化层的输入
+    - i_t = h_t * a_t
+    - h_t 是兴趣抽取层的GRU的第t个隐藏状态
+    - i_t 是用于兴趣进化层第二个GRU的输入
+    - a_t 是当前状态下和target的注意力
+    - 本质上是直接将attention系数和输入相乘。在理想的情况下，相关兴趣越少，输入值越小。
+    - 但是实际效果并不好，因为即使是零输入也会改变GRU的隐藏状态，所以相对兴趣越少，也会影响兴趣进化的学习
+  -  Attention based GRU(AGRU)
+    - 将attention系数来替换GRU的update gate，也就是GRU公式里面的U_t，直接对隐状态进行更新
+    - h_t = (1 - a_t) * h_t-1 + a_t * h~_t
+    - h_t, h_t-1, h~_t 都是t时刻的隐藏状态
+    - 将注意力嵌入进GRU改善了注意力机制的影响，并且AGRU克服了AIGRU的缺点
+    - 本质上注意力越大相对兴趣越大的，之前的状态就会遗忘更多，反之保留更多
+  - GRU with attentional update gate (AUGRU)
+    - 虽然AGRU使用attention系数来直接控制隐状态的更新，但是它使用了一个标量 a_t 来代替了update gate - U_t，也就是忽略了不同维度重要的区别。会丢失信息。
+    - 提出用 a_t来实现，attentional update gate的GRU结构
+    - U~_t = a_t * U_t
+    - 与候选广告越相关的兴趣，其对应的 a_t 越大，其信息在更新门中的权重也越大，从而能更顺畅地在序列中传递
+    - 反之，不相关的兴趣（漂移）其影响力就会被削弱。这使得模型能够聚焦于与当前推荐任务最相关的兴趣演化路径。
+
+## 3.3 Experiments 实验
+- Public Dataset
+  - Amazon Dataset，把review看做行为，按时间排序用户的行为。用t-1时刻的用户行为来预测t时刻用户是否会写评论这个行为
+- Industrial Dataset
+  - 用至少49天内被点击过的广告的这个行为作为target也就是 positive label
+  - 从这个广告被点击后，往前数14天作为用户历史行为，历史行为长度最大为50
+  - 在同一时间点没有被点击的作为辅助loss的 negative label，不过这里并没说明是单次下还是，这段时间内
+- Compared Methods
+  - BaseModel：embedding和DIEN一样，但是历史行为用sum pooling
+  - Wide&Deep：deep和base model一样，wide是线性模型
+  - PNN
+  - DIN
+  - Two layer GRU Attention
+- Result
+  - 在两个数据集上都很明显的，DIEN提升很多，具体数据见论文 Results on Datasets
+- Online Serving & A/B testing
+  - CTR 20.7%
+- Online deploy，为了降低延迟，线上优化
+  - element parallel GRU & kernel fusion，每一个GRU的hidden state可以parallel计算
+  - Batching: adjacent requests from different users are merged into one batch to take advantage of GPU
+  - Model compressing  Rocket Launching：压缩模型到更小的模型，但是performance很接近，比如 GRU的hidden state 维度从 108 压缩到 32
+  - Latency 从 33ms 降低到 6.6ms，QPS 提升到 360
+
+## 4 Conclusion
+- GRU + auxiliary loss，兴趣提取层，帮助发现用户兴趣背后的sequence，辅助loss帮助监督
+- AUGRU，兴趣进化层，捕获与目标商品相关的兴趣及其演变过程，降低了兴趣漂移的影响
+
+
+# 思考
+
+## 本篇论文核心是讲了个啥东西
+- 提出兴趣抽取层，主要作用是通过模拟用户兴趣迁移过程，抽取用户兴趣。
+  - GRU进行行为建模。遵循的原则是兴趣直接导致了连续的行为，提出了辅助损失（auxiliary loss）即使用下一个行为来监督当前的隐藏状态
+- 提出兴趣进化层，主要作用是通过在兴趣抽取层基础上加入注意力机制，模拟与当前目标广告和目标商品相关的兴趣进化过程。
+  - 建立了与目标项目相关的兴趣进化轨迹模型，基于从兴趣抽取层获得的兴趣序列，
+  - 另外设计了带有注意力机制的更新门的GRU（attentional update gate, 简称AUGRU)，捕获与目标商品相关的兴趣及其演变过程的注意力
+
+## 是为啥会提出这么个东西，为了解决什么问题
+- 问题：
+  - 基于DIN的问题，将用户的历史行为看作是一个无序的集合，忽略了行为之间的时序依赖关系。用户的兴趣不仅是多样的，更是在持续演化的。
+- 贡献：
+  - 提出兴趣抽取层，解决了DIN的问题，模拟了一个用户兴趣行为的进化顺序过程，同时引入辅助loss，帮忙监督hidden state的演化
+  - 提出兴趣进化层，模拟了DIN的思路，解决了上面兴趣演化过程中的兴趣漂移问题，建立了目标商品相关的兴趣及其演变过程的注意力
+
+## 为啥这个新东西会有效，有什么优势
+- 对比传统 W&D 之类的特征交叉模型
+  - 和DIN一样，更多的关注用户历史行为的影响和演化过程
+- 对比DIN
+  - 更加关注用户行为的有序性，也就是兴趣进化过程
+  - 提出辅助loss，更好的帮助序列模型hidden state的监督，同时辅助loss只是增加了train的时间，inference时间完全没影响
+
+## 与这个新东西类似的东西还有啥，相关的思路和模型
+- 系列的sequence model，本质上都是找用户的兴趣演变过程和候选ID的关系
+  - DSIN
+  - BST
+  - 同DIN
+
+## 在工业上通常会怎么用，如何实际应用
+- 十分建议尝试一下在搜索里面使用，同DIN原理，之前搜索过的商品行为会对之后的选择有影响
+- 如何构建sequence数据集这里包括如何选择负样本也是个问题，搜索中用户的行为类型更多，每一种类型的行为影响会不一样
+- 同时搜索里面可能需要引入query 进 sequence 来表达兴趣（搜索）的演变过程
+- 从实验结果上来看，auxiliary loss 在工业数据集上作用不明显。主要原因是监督兴趣学习的行为可能与目标商品不一致，考虑在这一层也采用attention机制，是否能弥补不足
+- 最后模型很变的很大，如何落地也是个问题
+
+## 参考链接
+- https://www.jianshu.com/p/79060b8db1eb
+- https://www.jianshu.com/p/6742d10b89a8
 
 
 
