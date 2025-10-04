@@ -151,7 +151,7 @@ def train(config):
     trainer = DIENTrainer(model, optimizer, criterion, batch_size)
     trainer.train([train_x, train_x_neg], train_y, epoch=num_epochs, trials=trials, valid_x=valid_x, valid_y=valid_y)
     test_loss, test_auc = trainer.test(test_x, test_y)
-    logging.info(f"Extreme Deep Interest Evolution Network model test_loss: {test_loss:.5f} | test_auc: {test_auc:.5f}")
+    logging.info(f"Deep Interest Evolution Network model test_loss: {test_loss:.5f} | test_auc: {test_auc:.5f}")
 
     return
 
