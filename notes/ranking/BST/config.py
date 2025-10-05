@@ -13,11 +13,18 @@ model_config = {
     "device": "cpu",
     "embed_dim": 10,
     "mlp_dims": [200, 80],
-    "activation_dim": 36,
+    "num_heads": 2,
+    "stacked_transformer_layers": 1,
+    "attn_dropout": 0.1,
+    "net_dropout": 0.1,
+    "use_position_emb": True,
+    "layer_norm": True,
+    "use_residual": True,
+    "seq_pooling_type": "mean"
 }
 
 
-class DeepInterestEvolutionNetworkModelConfig:
+class BehaviorSequenceTransformerModelConfig:
     all_config = {
         **data_config,
         **model_config,
