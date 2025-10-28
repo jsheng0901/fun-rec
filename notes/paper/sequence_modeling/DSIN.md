@@ -5,6 +5,7 @@
 - 公司：Alibaba
 - 链接：https://arxiv.org/pdf/1905.06482
 - Code：https://github.com/shenweichen/DSIN
+- 时间：2019
 - `泛读`
 
 # 内容
@@ -187,6 +188,11 @@ Session划分层：
 ## 在工业上通常会怎么用，如何实际应用
 - 同DIN/DSIN 一样，但是论文本身并没有线上的指标，虽然实验用到了production的数据，也取得了SOTA。
 - 如何构建sequence数据集这里包括如何划分session，才是难点。
+- session 三个部分都可以试一试：
+    - fix window 话费 session
+    - 在每个 Session 内，用 attention 机制，并将 attention 中的 position encoder 做了适配改进，这里可以试一试这种带有 time interval 性质的 position embedding
+    - 在不同 Session 间，同时利用双向 LSTM(Bi-LSTM) 学习用户兴趣的演变过程
+    - 最后通过 local activation unit 学习不同session内的兴趣 对于 target item的影响
 
 ## 参考链接
 - https://zhuanlan.zhihu.com/p/464948008

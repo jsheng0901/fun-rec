@@ -5,6 +5,7 @@
 - 公司：Alibaba
 - 链接：https://arxiv.org/pdf/1809.03672
 - Code：https://github.com/reczoo/FuxiCTR/blob/main/model_zoo/DIEN/src/DIEN.py
+- 时间：2019
 - `泛读`
 
 # 内容
@@ -263,6 +264,9 @@
 - 同时搜索里面可能需要引入query 进 sequence 来表达兴趣（搜索）的演变过程
 - 从实验结果上来看，auxiliary loss 在工业数据集上作用不明显。主要原因是监督兴趣学习的行为可能与目标商品不一致，考虑在这一层也采用attention机制，是否能弥补不足
 - 最后模型很变的很大，如何落地也是个问题
+- 两个创新的层都可以考虑试一试：
+  - 兴趣抽取层基于行为序列抽取兴趣序列
+  - 兴趣进化层是对与目标项目相关的兴趣进化过程进行建模。
 
 ## 参考链接
 - https://www.jianshu.com/p/79060b8db1eb
