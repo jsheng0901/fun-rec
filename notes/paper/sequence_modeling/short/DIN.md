@@ -43,7 +43,7 @@
 
 ## 4.1 Feature Representation
 <p style="text-align: center">
-    <img src="../pics/DIN/DIN_4.1_特征处理.png">
+    <img src="../../pics/DIN/DIN_4.1_特征处理.png">
       <figcaption style="text-align: center">
         DIN_特征处理
       </figcaption>
@@ -57,7 +57,7 @@
 
 ## 4.2 Base Model(Embedding&MLP)
 <p style="text-align: center">
-    <img src="../pics/DIN/DIN_4.2_base_model.png">
+    <img src="../../pics/DIN/DIN_4.2_base_model.png">
       <figcaption style="text-align: center">
         DIN_base_model
       </figcaption>
@@ -79,7 +79,7 @@
 
 ## 4.3 The structure of Deep Interest Network
 <p style="text-align: center">
-    <img src="../pics/DIN/DIN_4.3_模型结构.png">
+    <img src="../../pics/DIN/DIN_4.3_模型结构.png">
       <figcaption style="text-align: center">
         DIN_模型结构
       </figcaption>
@@ -95,7 +95,7 @@
   - 本质上还是pooling，但是是带有权重的pooling，这个权重和候选广告相关
 
 <p style="text-align: center">
-    <img src="../pics/DIN/DIN_4.3_局部激活公式.png">
+    <img src="../../pics/DIN/DIN_4.3_局部激活公式.png">
       <figcaption style="text-align: center">
         DIN_局部激活公式
       </figcaption>
@@ -139,7 +139,7 @@
 
 ## 6 EXPERIMENTS
 <p style="text-align: center">
-    <img src="../pics/DIN/DIN_6_AUC_公式.png">
+    <img src="../../pics/DIN/DIN_6_AUC_公式.png">
       <figcaption style="text-align: center">
         DIN_AUC_公式
       </figcaption>

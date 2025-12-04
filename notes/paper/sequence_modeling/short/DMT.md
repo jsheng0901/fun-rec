@@ -63,7 +63,7 @@
 
 ## 4 METHOD
 <p style="text-align: center">
-    <img src="../pics/DMT/DMT_4_模型结构.png">
+    <img src="../../pics/DMT/DMT_4_模型结构.png">
       <figcaption style="text-align: center">
         DMT_模型结构
       </figcaption>

@@ -22,7 +22,7 @@
 
 ## 1 介绍
 <p style="text-align: center">
-    <img src="../pics/DSTN/DSTN_1_辅助数据类型.png">
+    <img src="../../pics/DSTN/DSTN_1_辅助数据类型.png">
       <figcaption style="text-align: center">
         DSTN 辅助数据类型
       </figcaption>
@@ -66,7 +66,7 @@
 
 ## 2.2 Embedding
 <p style="text-align: center">
-    <img src="../pics/DSTN/DSTN_2.2_embedding处理.png">
+    <img src="../../pics/DSTN/DSTN_2.2_embedding处理.png">
       <figcaption style="text-align: center">
         DSTN_embedding处理
       </figcaption>
@@ -99,7 +99,7 @@
 
 ## 2.3 DSTN - Pooling Model
 <p style="text-align: center">
-    <img src="../pics/DSTN/DSTN_2.3_模型结构.png">
+    <img src="../../pics/DSTN/DSTN_2.3_模型结构.png">
       <figcaption style="text-align: center">
         DSTN_模型结构
       </figcaption>
@@ -257,7 +257,7 @@
 
 Ad server requests 过程，重复3，4步骤直到满足条件
 <p style="text-align: center">
-    <img src="../pics/DSTN/DSTN_4_如何用上下文特征.png">
+    <img src="../../pics/DSTN/DSTN_4_如何用上下文特征.png">
       <figcaption style="text-align: center">
         DSTN_如何用上下文特征
       </figcaption>

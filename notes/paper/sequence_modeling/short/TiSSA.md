@@ -64,7 +64,7 @@
 
 ## 3.2 Directional Multi-Head Attention
 <p style="text-align: center">
-    <img src="../pics/TiSSA/TiSSA_3.2_注意力结构图.png">
+    <img src="../../pics/TiSSA/TiSSA_3.2_注意力结构图.png">
       <figcaption style="text-align: center">
         TiSSA_注意力结构图
       </figcaption>
@@ -88,7 +88,7 @@
 
 ## 4 TIME SLICE SELF-ATTENTION APPROACH AND RANKING SYSTEM
 <p style="text-align: center">
-    <img src="../pics/TiSSA/TiSSA_4_自切片排序框架.png">
+    <img src="../../pics/TiSSA/TiSSA_4_自切片排序框架.png">
       <figcaption style="text-align: center">
         TiSSA_自切片排序框架
       </figcaption>
@@ -97,7 +97,7 @@
 
 ## Feature Engineering
 <p style="text-align: center">
-    <img src="../pics/TiSSA/TiSSA_4.1_特征工程.png">
+    <img src="../../pics/TiSSA/TiSSA_4.1_特征工程.png">
       <figcaption style="text-align: center">
         TiSSA_特征工程
       </figcaption>
@@ -205,7 +205,7 @@
 
 ## 5.4 Experimental Results on Offline Dataset
 <p style="text-align: center">
-    <img src="../pics/TiSSA/TiSSA_5.4_实验结果.png">
+    <img src="../../pics/TiSSA/TiSSA_5.4_实验结果.png">
       <figcaption style="text-align: center">
         TiSSA_实验结果
       </figcaption>

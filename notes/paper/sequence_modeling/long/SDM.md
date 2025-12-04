@@ -76,7 +76,7 @@
 - 同样对于用户 也可以用不同的feature 进行拼接
 
 <p style="text-align: center">
-    <img src="../pics/SDM/SDM_3.2_模型结构.png">
+    <img src="../../pics/SDM/SDM_3.2_模型结构.png">
       <figcaption style="text-align: center">
         SDM_模型结构
       </figcaption>

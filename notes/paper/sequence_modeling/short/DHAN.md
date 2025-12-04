@@ -43,7 +43,7 @@
 
 ### 2.1 The Structure of DHAN
 <p style="text-align: center">
-    <img src="../pics/DHAN/DHAN_2.1_模型结构.png">
+    <img src="../../pics/DHAN/DHAN_2.1_模型结构.png">
       <figcaption style="text-align: center">
         DHAN_模型结构
       </figcaption>
@@ -66,7 +66,7 @@
 
 ### 2.2 The Structure of Simplified DHAN
 <p style="text-align: center">
-    <img src="../pics/DHAN/DHAN_2.2_简化的DHAN结构.png">
+    <img src="../../pics/DHAN/DHAN_2.2_简化的DHAN结构.png">
       <figcaption style="text-align: center">
         DHAN_简化的DHAN结构
       </figcaption>

@@ -63,7 +63,7 @@
   - 可以提供更丰富的信息来指出用户当时的兴趣
   - 文章中考虑的微行为如下
 <p style="text-align: center">
-    <img src="../pics/HUP/HUP_3.1_用户微行为列表.png">
+    <img src="../../pics/HUP/HUP_3.1_用户微行为列表.png">
       <figcaption style="text-align: center">
         HUP_用户微行为列表
       </figcaption>
@@ -74,7 +74,7 @@
 
 ## 4 HUP: A HIERARCHICAL USER PROFILING FRAMEWORK
 <p style="text-align: center">
-    <img src="../pics/HUP/HUP_4_模型结构.png">
+    <img src="../../pics/HUP/HUP_4_模型结构.png">
       <figcaption style="text-align: center">
         HUP_模型结构
       </figcaption>
@@ -143,7 +143,7 @@
 
 ### 4.3 Behavior-LSTM Cell
 <p style="text-align: center">
-    <img src="../pics/HUP/HUP_4.3_Behavior-LSTM_结构.png">
+    <img src="../../pics/HUP/HUP_4.3_Behavior-LSTM_结构.png">
       <figcaption style="text-align: center">
         HUP_Behavior-LSTM_结构
       </figcaption>

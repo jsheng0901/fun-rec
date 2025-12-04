@@ -82,7 +82,7 @@
 
 ## 3.2 DIEM 模型
 <p style="text-align: center">
-    <img src="../pics/DIEN/DIEN_3.2_模型结构.png">
+    <img src="../../pics/DIEN/DIEN_3.2_模型结构.png">
       <figcaption style="text-align: center">
         DIEN_模型结构
       </figcaption>
@@ -102,7 +102,7 @@
   - GRU克服了RNN模型的梯度消失问题，并且速度比LSTM快。
 
 <p style="text-align: center">
-    <img src="../pics/DIEN/DIEN_3.2_GRU公式.png">
+    <img src="../../pics/DIEN/DIEN_3.2_GRU公式.png">
       <figcaption style="text-align: center">
         DIEN_GRU公式
       </figcaption>
@@ -133,7 +133,7 @@
     - 本质上就是 N 对 pair 的binary classification
 
 <p style="text-align: center">
-    <img src="../pics/DIEN/DIEN_3.2_辅助loss公式.png">
+    <img src="../../pics/DIEN/DIEN_3.2_辅助loss公式.png">
       <figcaption style="text-align: center">
         DIEN_辅助loss公式
       </figcaption>
@@ -141,7 +141,7 @@
   </p>
 
 <p style="text-align: center">
-    <img src="../pics/DIEN/DIEN_3.2_全局loss公式.png">
+    <img src="../../pics/DIEN/DIEN_3.2_全局loss公式.png">
       <figcaption style="text-align: center">
         DIEN_全局loss公式
       </figcaption>
@@ -172,7 +172,7 @@
   - 这一层的GRU的输入就是上一层GRU的输出，i_t = h_t，注意这里的 i_t 是上一层的输出并且会被下面attention score更新，具体更新方式见下文详解
 
 <p style="text-align: center">
-    <img src="../pics/DIEN/DIEN_3.2_兴趣进化层权重公式.png">
+    <img src="../../pics/DIEN/DIEN_3.2_兴趣进化层权重公式.png">
       <figcaption style="text-align: center">
         DIEN__兴趣进化层权重公式
       </figcaption>
