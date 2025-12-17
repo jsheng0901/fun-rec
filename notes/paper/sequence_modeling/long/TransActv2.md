@@ -283,11 +283,11 @@
     </img>
   </p>
 
-- 主要对比 BST 和 TransAct v1
+- 主要对比 BST 和 TransAct v1，basemodel 可能是 WDL no sequence
 - V2 的效果明显很好，其中基于印象的负采样（NALimp）对这一改进至关重要，模型受益于对用户不感兴趣的更细致的理解，从而更好地校准排序模型
 
 ### 4.3 Online Experiment
-- 每组服务 1.5% 首页访问用户
+- 把 offline的 model 后面第二个，第四个，第五个都deploy了，每组服务 1.5% 首页访问用户
 - 用 TransAct (RT sequence) 作为 base，保证了用户体验同时保证了对比的效果有意义
 
 #### 4.3.1.Metrics
@@ -387,7 +387,7 @@
 
 ## 在工业上通常会怎么用，如何实际应用
 - 数据：
-  - sequence 里面的行为参考 V1 都可以试一试
+  - sequence 里面的行为参考 V1 都可以试一试，这里sequence的构建是根据 item 来排序的，而不是行为，也就是说单个 item 可以有多个行为在同一个位置上
   - 辅助任务的负样本选择非常值得试一试，可以参考曝光但是用户没有点击的同一个 request 里面的其它 item，但是正样本的选择很难，因为搜索是明显有意图的 session
 - 短期：
   - TransAct V2：
