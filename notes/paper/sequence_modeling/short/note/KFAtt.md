@@ -260,4 +260,8 @@
 - KFAtt-freq 需要分析用户行为是否有这个特性再使用
 - KFAtt-trans 的编码和解码两步都可以试一试
 
+## 参考
+- https://zhuanlan.zhihu.com/p/266298467
+- https://zhuanlan.zhihu.com/p/413134465
+
 
