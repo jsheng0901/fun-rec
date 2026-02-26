@@ -190,3 +190,7 @@
 - 考虑短期行为中的多头自注意力机制，query 可能考虑用 candidate item 而不是 user
 - 长期行为中考虑多序列的融合 attention net 的机制来学习和 candidate item 的关系
 - 两种序列融合 gate 值得尝试，可以对比一下 MMoE 的效果。
+
+## 参考
+- https://www.huaxiaozhuan.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/chapters/13_dnn_rec_system2.html
+- https://zhuanlan.zhihu.com/p/141411747
