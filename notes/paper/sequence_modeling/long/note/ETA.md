@@ -4,7 +4,7 @@
 - 参考论文：End-to-End User Behavior Retrieval in Click-Through Rate Prediction Model
 - 公司：Alibaba
 - 链接：https://arxiv.org/pdf/2108.04468
-- Code：
+- Code：https://github.com/reczoo/FuxiCTR/blob/main/model_zoo/LongCTR/ETA/ETA.py
 - 时间：2021
 - `泛读`
 
@@ -240,4 +240,6 @@
 
 ## 参考
 - https://www.huaxiaozhuan.com/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/chapters/9_ctr_prediction8.html
+- https://zhuanlan.zhihu.com/p/547087040
+- https://zhuanlan.zhihu.com/p/556195411
 
